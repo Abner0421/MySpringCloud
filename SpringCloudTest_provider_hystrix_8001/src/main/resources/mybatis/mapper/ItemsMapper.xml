@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsc.springcloud.dao.ItemsMapper">
+  <resultMap id="BaseResultMap" type="com.zsc.springcloud.bean.Items">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="items_code" jdbcType="VARCHAR" property="itemsCode" />
+    <result column="items_name" jdbcType="VARCHAR" property="itemsName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_date" jdbcType="VARCHAR" property="createDate" />
+    <result column="modify_date" jdbcType="VARCHAR" property="modifyDate" />
+    <result column="data_source" jdbcType="VARCHAR" property="dataSource" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, items_code, items_name, status, create_date, modify_date, data_source
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from qy_items
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getAllItems" resultMap="BaseResultMap">
+  		select * from qy_items order by create_date desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qy_items
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zsc.springcloud.bean.Items">
+    insert into qy_items (id, items_code, items_name, 
+      status, create_date, modify_date, data_source
+      )
+    values (#{id,jdbcType=INTEGER}, #{itemsCode,jdbcType=VARCHAR}, #{itemsName,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, now(), now(),DATABASE() 
+      )
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.zsc.springcloud.bean.Items">
+    update qy_items
+    set items_code = #{itemsCode,jdbcType=VARCHAR},
+      items_name = #{itemsName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = now()
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
